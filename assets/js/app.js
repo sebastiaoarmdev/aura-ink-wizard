@@ -1,7 +1,7 @@
 import { CHAT_FLOW } from './flow.js';
 
 // Configurações do Negócio
-const WHATSAPP_NUMBER = "5511999999999"; // Substitua pelo número real do Aura Ink
+const WHATSAPP_NUMBER = "5519996615402"; // Substitua pelo número real do Aura Ink
 
 // Estado da Aplicação (Memória do Chat)
 const state = {
@@ -77,25 +77,59 @@ function appendMessage(text, sender) {
  * Trata o clique do usuário em uma opção
  */
 function handleUserChoice(option, field) {
-  // Salva a resposta no estado
+  // Salva a resposta no estado se houver um campo mapeado
   if (field) {
     state.answers[field] = option.value;
   }
 
-  // Desabilita os botões atuais para evitar duplo clique
+  // Desabilita as ações atuais imediatamente para evitar múltiplos cliques
   chatActions.innerHTML = '';
 
   // Mostra a escolha do usuário como uma mensagem no chat
   appendMessage(option.text, 'user');
 
-  // Simula o "Digitando..." do bot com um leve delay de UX (500ms)
+  // Mostra o indicador de digitação do bot
+  showTypingIndicator();
+
+  // Simula o tempo de resposta humana do bot
   setTimeout(() => {
+    removeTypingIndicator();
     renderStep(option.next);
-  }, 6000); // 600ms para uma transição natural
+  }, 1500); // Delay de 1.5 segundos para excelente percepção de UX
 }
 
 /**
- * Cria e renderiza o botão de conversão do WhatsApp
+ * Injeta a bolha de "Digitando..." de forma dinâmica no chat
+ */
+function showTypingIndicator() {
+  const typingElement = document.createElement('div');
+  typingElement.className = 'message bot typing-indicator-bubble';
+  typingElement.id = 'typing-indicator';
+
+  typingElement.innerHTML = `
+    <div class="typing-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  `;
+
+  chatMessages.appendChild(typingElement);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+/**
+ * Remove com precisão a bolha de "Digitando..." do DOM
+ */
+function removeTypingIndicator() {
+  const indicator = document.getElementById('typing-indicator');
+  if (indicator) {
+    indicator.remove();
+  }
+}
+
+/**
+ * Cria e renderiza o botão de conversão final do WhatsApp
  */
 function renderWhatsAppButton() {
   const wsLink = document.createElement('a');
@@ -104,16 +138,17 @@ function renderWhatsAppButton() {
   wsLink.target = '_blank';
   wsLink.rel = 'noopener noreferrer';
 
-  // Monta a string de mensagem formatada
+  // Monta o template string da mensagem de forma limpa e legível
   const messageText = `Olá, Aura Ink! Fiz a simulação de orçamento no site:\n\n` +
                       `• Estilo: ${state.answers.style}\n` +
                       `• Tamanho: ${state.answers.size}\n` +
                       `• Região: ${state.answers.location}`;
 
+  // Codifica a string para URL de forma segura
   wsLink.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(messageText)}`;
 
   chatActions.appendChild(wsLink);
 }
 
-// Inicia o app assim que o DOM estiver pronto
+// Inicia o app assim que o DOM estiver completamente carregado
 document.addEventListener('DOMContentLoaded', initChat);
