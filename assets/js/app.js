@@ -108,9 +108,9 @@ function showTypingIndicator() {
 
   typingElement.innerHTML = `
     <div class="typing-dots">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span>.</span>
+      <span>.</span>
+      <span>.</span>
     </div>
   `;
 
