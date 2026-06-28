@@ -224,3 +224,47 @@ body {
   70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
   100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
+
+/* ==========================================================================
+   7. ANIMAÇÃO DE DIGITANDO (TYPING INDICATOR)
+   ========================================================================== */
+.typing-indicator-bubble {
+  padding: 12px 16px !important;
+  min-width: 60px;
+}
+
+.typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 12px;
+}
+
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounceDot 1.4s infinite ease-in-out both;
+}
+
+/* Delays para criar o efeito de onda/fluidez nos pontos */
+.typing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounceDot {
+  0%, 80%, 100% { 
+    transform: scale(0);
+    opacity: 0.4;
+  } 
+  40% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
