@@ -26,7 +26,8 @@ body {
   font-family: var(--font-sans);
   background-color: var(--bg-main);
   color: var(--text-primary);
-  height: 100vh;
+  height: 100vh; /* Fallback para navegadores antigos */
+  height: 100dvh; /* Garante que o body caiba na tela real do celular */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,8 +41,9 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 450px; /* Tamanho perfeito para simular um celular no desktop */
-  height: 100vh;
+  max-width: 450px;
+  height: 100vh;  /* Fallback */
+  height: 100dvh; /* Encaixe perfeito no mobile */
   background-color: var(--bg-chat);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
